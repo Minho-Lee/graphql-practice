@@ -1,25 +1,41 @@
 import React, { Component } from 'react';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
+
 import Link from './Link';
 
 class LinkList extends Component {
   render() {
-    const linksToRender = [
+    const FEED_QUERY = gql`
       {
-        id: '1',
-        description: 'one',
-        url: 'https://www.google.com'
-      },
-      {
-        id: '2',
-        description: 'two',
-        url: 'https://www.google.com'
+        feed {
+          links {
+            id
+            createdAt
+            url
+            description
+          }
+        }
       }
-    ];
+    `;
 
     return (
-      <div>
-        {linksToRender.map((link) =><Link key={link.id} link={link} />)}
-      </div>
+      <Query query={FEED_QUERY}>
+      {/* Apollo injected several props into the component's `render prop function` */}
+      {/* These props provide info about the `state` of the network request */}
+      {({ loading, error, data }) => {
+        if (loading) return <div>Fetching...</div>
+        if (error) return <div>Error Occurred!</div>
+
+        const linksToRender = data.feed.links
+
+        return (
+          <div>
+            {linksToRender.map((link) => <Link key={link.id} link={link} />)}
+          </div>
+        )
+      }}
+      </Query>
     )
   }
 }
