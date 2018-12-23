@@ -14,6 +14,9 @@ class LinkList extends Component {
             createdAt
             url
             description
+            postedBy {
+              id
+            }
           }
         }
       }

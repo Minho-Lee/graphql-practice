@@ -14,9 +14,6 @@ class CreateLink extends Component {
     })
   }
 
-  onSubmit() {
-    console.log('submitted!');
-  }
   render() {
     const POST_MUTATION = gql`
       mutation PostMuTation($description: String!, $url: String!) {

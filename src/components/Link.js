@@ -5,8 +5,9 @@ class Link extends Component {
     const { link } = this.props;
 
     return (
-      <div>
-        {link.description} ({link.url})
+      <div className="mb4">
+        {link.description} ({link.url})<br/>
+        {link.postedBy ? link.postedBy.id : null}
       </div>
     );
   }
