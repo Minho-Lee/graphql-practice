@@ -21,22 +21,22 @@ class LinkList extends Component {
 
     return (
       <Query query={FEED_QUERY}>
-      {/* Apollo injected several props into the component's `render prop function` */}
-      {/* These props provide info about the `state` of the network request */}
-      {({ loading, error, data }) => {
-        if (loading) return <div>Fetching...</div>
-        if (error) return <div>Error Occurred!</div>
+        {/* Apollo injected several props into the component's `render prop function` */}
+        {/* These props provide info about the `state` of the network request */}
+        {({ loading, error, data }) => {
+          if (loading) return <div>Fetching...</div>
+          if (error) return <div>Error Occurred!</div>
 
-        const linksToRender = data.feed.links
+          const linksToRender = data.feed.links;
 
-        return (
-          <div>
-            {linksToRender.map((link) => <Link key={link.id} link={link} />)}
-          </div>
-        )
-      }}
+          return (
+            <div>
+              {linksToRender.map((link) => <Link key={link.id} link={link} />)}
+            </div>
+          );
+        }}
       </Query>
-    )
+    );
   }
 }
 
