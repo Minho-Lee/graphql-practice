@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import gql from 'graphql-tag';
+import { Mutation } from 'react-apollo';
 
 import { AUTH_TOKEN } from '../constants';
 
@@ -10,6 +12,25 @@ class Link extends Component {
   }
 
   render() {
+    const VOTE_MUTATION = gql`
+      mutation voteMutation($id: ID!) {
+        vote(linkId: $id) {
+          id
+          link {
+            votes {
+              id
+              user {
+                id
+                name
+              }
+            }
+          }
+          user {
+            id
+          }
+        }
+      }
+    `;
     const { link, index } = this.props;
     const authToken = localStorage.getItem(AUTH_TOKEN);
     const arrowStyle = {
@@ -21,13 +42,20 @@ class Link extends Component {
         <div className="flex items-center">
           <span className="gray">{index + 1}.</span>
           {authToken && (
-            <div
-              className="ml1 gray f11"
-              onClick={() => this._voteForLink()}
-              style={arrowStyle}
+            <Mutation
+              mutation={VOTE_MUTATION}
+              variables={{ id: link.id }}
             >
-              ▲
-            </div>
+              {mutation => (
+                <div
+                  className="ml1 gray f11"
+                  onClick={mutation}
+                  style={arrowStyle}
+                >
+                  ▲
+                </div>
+              )}
+            </Mutation>
           )}
         </div>
         <div className="ml1">
