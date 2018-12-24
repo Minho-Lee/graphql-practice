@@ -6,31 +6,27 @@ import { AUTH_TOKEN } from '../constants';
 
 import { timeDifferenceForDate } from '../helpers/utils';
 
-class Link extends Component {
-  _voteForLink() {
-    console.log('vote');
-  }
-
-  render() {
-    const VOTE_MUTATION = gql`
-      mutation voteMutation($id: ID!) {
-        vote(linkId: $id) {
+const VOTE_MUTATION = gql`
+  mutation voteMutation($id: ID!) {
+    vote(linkId: $id) {
+      id
+      link {
+        votes {
           id
-          link {
-            votes {
-              id
-              user {
-                id
-                name
-              }
-            }
-          }
           user {
             id
+            name
           }
         }
       }
-    `;
+      user {
+        id
+      }
+    }
+  }
+`;
+class Link extends Component {
+  render() {
     const { link, index } = this.props;
     const authToken = localStorage.getItem(AUTH_TOKEN);
     const arrowStyle = {
@@ -45,6 +41,9 @@ class Link extends Component {
             <Mutation
               mutation={VOTE_MUTATION}
               variables={{ id: link.id }}
+              update={(store, { data: { vote } }) =>
+                this.props.updateStoreAfterVote(store, vote, link.id)
+              }
             >
               {mutation => (
                 <div
