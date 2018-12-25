@@ -179,7 +179,7 @@ class LinkList extends Component {
                 <Link
                   key={link.id}
                   link={link}
-                  index={index}
+                  index={index + pageIndex}
                   updateStoreAfterVote={this._updateCacheAfterVote}
                 />
               ))}
